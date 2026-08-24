@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Instrumentos GyO · Plan DG/CAA/0376</title>
+<style>
+:root{
+  --tinta:#1b2430;
+  --tinta-media:#55606f;
+  --linea:#c9cfd8;
+  --linea-fina:#e4e8ed;
+  --papel:#ffffff;
+  --fondo:#eef1f4;
+  --guinda:#8b1f3f;
+  --verde:#1d6b52;
+  --ambar:#a8720d;
+  --rojo:#a52222;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  background:var(--fondo);
+  color:var(--tinta);
+  font-family:ui-sans-serif,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  font-size:15px;
+  line-height:1.45;
+  -webkit-text-size-adjust:100%;
+}
+.wrap{max-width:940px;margin:0 auto;padding:16px 14px 60px}
+
+/* ── Encabezado ── */
+header.doc{
+  background:var(--papel);
+  border-top:5px solid var(--guinda);
+  padding:18px 20px 16px;
+  margin-bottom:14px;
+}
+header.doc h1{
+  font-size:17px;margin:0 0 4px;letter-spacing:-.2px;font-weight:650;
+}
+header.doc .sub{font-size:12.5px;color:var(--tinta-media);margin:0}
+header.doc .of{
+  display:inline-block;margin-top:9px;font-size:11px;letter-spacing:.09em;
+  text-transform:uppercase;color:var(--guinda);border:1px solid var(--guinda);
+  padding:3px 8px;font-weight:600;
+}
+
+/* ── Datos comunes ── */
+.comunes{background:var(--papel);padding:14px 20px 18px;margin-bottom:14px;border-left:3px solid var(--linea)}
+.comunes h2{font-size:11px;letter-spacing:.09em;text-transform:uppercase;color:var(--tinta-media);margin:0 0 10px;font-weight:600}
+
+/* ── Selector de instrumento ── */
+nav.sel{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px}
+nav.sel button{
+  flex:1 1 145px;text-align:left;background:var(--papel);border:1px solid var(--linea);
+  padding:9px 11px;cursor:pointer;font-family:inherit;color:var(--tinta-media);
+  border-radius:2px;line-height:1.25;
+}
+nav.sel button .k{display:block;font-size:10.5px;letter-spacing:.08em;font-weight:700;color:var(--guinda);margin-bottom:2px}
+nav.sel button .n{display:block;font-size:12.5px}
+nav.sel button .p{display:block;font-size:10.5px;color:#8b95a3;margin-top:3px}
+nav.sel button[aria-selected="true"]{background:var(--tinta);border-color:var(--tinta);color:#fff}
+nav.sel button[aria-selected="true"] .k{color:#f0c8d4}
+nav.sel button[aria-selected="true"] .p{color:#9aa6b5}
+nav.sel button:focus-visible{outline:2px solid var(--guinda);outline-offset:2px}
+
+/* ── Panel ── */
+section.panel{background:var(--papel);padding:20px;display:none}
+section.panel.on{display:block}
+.panel > h2{font-size:15.5px;margin:0 0 3px;font-weight:650}
+.panel > .norma{font-size:11.5px;color:var(--tinta-media);margin:0 0 16px;padding-bottom:12px;border-bottom:1px solid var(--linea-fina)}
+
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:11px 14px}
+.f{display:flex;flex-direction:column}
+.f.full{grid-column:1/-1}
+label{font-size:11px;letter-spacing:.05em;text-transform:uppercase;color:var(--tinta-media);margin-bottom:4px;font-weight:600}
+input,select,textarea{
+  font-family:inherit;font-size:15px;color:var(--tinta);background:#fbfcfd;
+  border:1px solid var(--linea);border-radius:2px;padding:9px 10px;width:100%;
+}
+input:focus,select:focus,textarea:focus{outline:2px solid var(--guinda);outline-offset:-1px;background:#fff}
+textarea{min-height:62px;resize:vertical}
+.hint{font-size:11px;color:#8b95a3;margin-top:3px}
+
+/* filas dinámicas */
+.filas{margin-top:6px}
+.fila{border:1px solid var(--linea-fina);border-left:3px solid var(--linea);padding:12px;margin-bottom:9px;background:#fcfdfe;position:relative}
+.fila .num{position:absolute;top:9px;right:10px;font-size:10.5px;color:#a5aeba;font-weight:700}
+.fila.ok{border-left-color:var(--verde)}
+.fila.alerta{border-left-color:var(--rojo)}
+.badge{display:inline-block;font-size:10.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:2px 7px;border-radius:2px;margin-top:6px}
+.badge.ok{background:#e3f0eb;color:var(--verde)}
+.badge.mal{background:#f7e4e4;color:var(--rojo)}
+.badge.neutro{background:#eceff3;color:var(--tinta-media)}
+
+.acciones{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px;padding-top:14px;border-top:1px solid var(--linea-fina)}
+button.b{font-family:inherit;font-size:13.5px;padding:10px 16px;border-radius:2px;cursor:pointer;border:1px solid var(--linea);background:#fff;color:var(--tinta)}
+button.b.pri{background:var(--guinda);border-color:var(--guinda);color:#fff;font-weight:600}
+button.b:focus-visible{outline:2px solid var(--tinta);outline-offset:2px}
+
+.resumen{margin-top:14px;padding:12px 14px;background:#f5f7f9;border-left:3px solid var(--tinta-media);font-size:13px}
+.resumen strong{font-size:19px;font-weight:650}
+
+.firmas{display:grid;grid-template-columns:1fr 1fr;gap:26px;margin-top:30px}
+.firma{border-top:1px solid var(--tinta);padding-top:6px;font-size:11px;color:var(--tinta-media);text-align:center}
+
+footer.pie{margin-top:22px;padding-top:12px;border-top:1px solid var(--linea-fina);font-size:10.5px;color:#8b95a3;line-height:1.5}
+
+/* ── Impresión ── */
+@media print{
+  body{background:#fff;font-size:11pt}
+  .wrap{max-width:none;padding:0}
+  nav.sel,.acciones,.hint,.noprint{display:none !important}
+  section.panel{padding:0;display:none}
+  section.panel.on{display:block}
+  header.doc,.comunes{padding:0 0 10px;margin-bottom:10px;border-left:0}
+  header.doc{border-top:3px solid #000}
+  input,select,textarea{border:0;border-bottom:1px solid #999;background:#fff;padding:2px 0;font-size:11pt}
+  textarea{border:1px solid #ccc;padding:4px}
+  .fila{break-inside:avoid;background:#fff}
+  @page{margin:14mm}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="doc">
+  <h1>Instrumentos de gestión — Servicio de Ginecología y Obstetricia</h1>
+  <p class="sub">Hospital Regional "Lic. Adolfo López Mateos" · ISSSTE · Ciudad de México</p>
+  <span class="of">Plan DG/CAA/0376 · Puntos 18–45</span>
+</header>
+
+<div class="comunes noprint-keep">
+  <h2>Datos del registro</h2>
+  <div class="grid">
+    <div class="f"><label for="c-fecha">Fecha</label><input type="date" id="c-fecha"></div>
+    <div class="f"><label for="c-turno">Turno</label>
+      <select id="c-turno">
+        <option>Matutino</option><option>Vespertino</option>
+        <option>Nocturno A</option><option>Nocturno B</option>
+        <option>Jornada acumulada</option>
+      </select></div>
+    <div class="f"><label for="c-resp">Responsable del registro</label><input id="c-resp" placeholder="Nombre y cargo"></div>
+    <div class="f"><label for="c-folio">Folio</label><input id="c-folio" readonly></div>
+  </div>
+</div>
+
+<nav class="sel" role="tablist" aria-label="Instrumentos">
+  <button role="tab" aria-selected="true" data-t="i1"><span class="k">GO-01</span><span class="n">Programación quirúrgica e ingreso 24 h</span><span class="p">Punto 18</span></button>
+  <button role="tab" aria-selected="false" data-t="i2"><span class="k">GO-02</span><span class="n">Planeación de egreso y estancia</span><span class="p">Puntos 19 · 21</span></button>
+  <button role="tab" aria-selected="false" data-t="i3"><span class="k">GO-03</span><span class="n">Pase de visita conjunto</span><span class="p">Punto 20</span></button>
+  <button role="tab" aria-selected="false" data-t="i4"><span class="k">GO-04</span><span class="n">Interconsultas · reloj de 8 h</span><span class="p">Punto 24</span></button>
+  <button role="tab" aria-selected="false" data-t="i5"><span class="k">GO-05</span><span class="n">Recorrido y cobertura de turno</span><span class="p">Puntos 29 · 30</span></button>
+  <button role="tab" aria-selected="false" data-t="i6"><span class="k">GO-06</span><span class="n">Informes a familiares y constancias</span><span class="p">Puntos 35 · 45</span></button>
+</nav>
+
+<!-- GO-01 -->
+<section class="panel on" id="i1">
+  <h2>GO-01 · Programación quirúrgica electiva semanal</h2>
+  <p class="norma">Punto 18 del plan. La paciente electiva debe ingresar como máximo 24 horas antes de la incisión. El semáforo se calcula solo.</p>
+  <div class="grid">
+    <div class="f"><label for="q-sem">Semana quirúrgica</label><input id="q-sem" placeholder="Del __ al __ de ____"></div>
+    <div class="f"><label for="q-corte">Fecha de corte del programa</label><input type="date" id="q-corte"><div class="hint">Debe ser previa al inicio de la semana</div></div>
+  </div>
+  <div class="filas" id="q-filas"></div>
+  <button class="b" onclick="addQ()">+ Agregar cirugía</button>
+  <div class="resumen" id="q-res">Sin cirugías capturadas.</div>
+  <div class="acciones">
+    <button class="b pri" onclick="pdf()">Generar PDF</button>
+    <button class="b" onclick="limpiar('i1')">Limpiar</button>
+  </div>
+  <div class="firmas"><div class="firma">Jefatura de Servicio de GyO</div><div class="firma">Coordinación de Quirófano</div></div>
+</section>
+
+<!-- GO-02 -->
+<section class="panel" id="i2">
+  <h2>GO-02 · Planeación de egreso y vigilancia de estancia</h2>
+  <p class="norma">Puntos 19 y 21. Se llena al ingreso y se actualiza en el pase de visita. Umbrales: parto 2 días · cesárea 3 · cirugía ginecológica mayor 4.</p>
+  <div class="filas" id="e-filas"></div>
+  <button class="b" onclick="addE()">+ Agregar paciente</button>
+  <div class="resumen" id="e-res">Sin pacientes capturadas.</div>
+  <div class="acciones">
+    <button class="b pri" onclick="pdf()">Generar PDF</button>
+    <button class="b" onclick="limpiar('i2')">Limpiar</button>
+  </div>
+  <div class="firmas"><div class="firma">Médico tratante</div><div class="firma">Enfermería · Trabajo Social</div></div>
+</section>
+
+<!-- GO-03 -->
+<section class="panel" id="i3">
+  <h2>GO-03 · Pase de visita conjunto</h2>
+  <p class="norma">Punto 20. Lunes y jueves, con participación de coordinadores médicos y personal directivo. Lo que se evalúa es la asistencia y el cierre de acuerdos.</p>
+  <div class="grid">
+    <div class="f"><label for="v-dia">Día</label><select id="v-dia"><option>Lunes</option><option>Jueves</option><option>Extraordinario</option></select></div>
+    <div class="f"><label for="v-ini">Hora de inicio</label><input type="time" id="v-ini"></div>
+    <div class="f"><label for="v-fin">Hora de término</label><input type="time" id="v-fin"></div>
+    <div class="f"><label for="v-camas">Camas revisadas</label><input type="number" min="0" id="v-camas"></div>
+    <div class="f full"><label for="v-asist">Participantes</label><textarea id="v-asist" placeholder="Nombre y cargo, uno por línea. Indicar la representación directiva presente."></textarea></div>
+  </div>
+  <div class="filas" id="v-filas"></div>
+  <button class="b" onclick="addV()">+ Agregar acuerdo</button>
+  <div class="resumen" id="v-res">Sin acuerdos capturados.</div>
+  <div class="acciones">
+    <button class="b pri" onclick="pdf()">Generar PDF</button>
+    <button class="b" onclick="limpiar('i3')">Limpiar</button>
+  </div>
+  <div class="firmas"><div class="firma">Jefatura de Servicio</div><div class="firma">Representación directiva</div></div>
+</section>
+
+<!-- GO-04 -->
+<section class="panel" id="i4">
+  <h2>GO-04 · Interconsultas con reloj de 8 horas</h2>
+  <p class="norma">Punto 24. Registrar tanto las que el servicio solicita como las que responde. El tiempo transcurrido se calcula automáticamente.</p>
+  <div class="filas" id="ic-filas"></div>
+  <button class="b" onclick="addIC()">+ Agregar interconsulta</button>
+  <div class="resumen" id="ic-res">Sin interconsultas capturadas.</div>
+  <div class="acciones">
+    <button class="b pri" onclick="pdf()">Generar PDF</button>
+    <button class="b" onclick="limpiar('i4')">Limpiar</button>
+  </div>
+  <div class="firmas"><div class="firma">Enlace del turno</div><div class="firma">Jefatura de Servicio</div></div>
+</section>
+
+<!-- GO-05 -->
+<section class="panel" id="i5">
+  <h2>GO-05 · Recorrido y cobertura de turno</h2>
+  <p class="norma">Puntos 29 y 30. Registra la cobertura del puesto por turno, no el desempeño individual. Imprimir y exhibir en el servicio: el plan exige bitácora visible y actualizada.</p>
+  <div class="grid">
+    <div class="f"><label for="r-tipo">Tipo de recorrido</label><select id="r-tipo">
+      <option>Jefe de área (punto 29)</option>
+      <option>Asistente de dirección (punto 29)</option>
+      <option>Director / Subdirector médico (punto 30)</option></select></div>
+    <div class="f"><label for="r-hora">Hora del recorrido</label><input type="time" id="r-hora"></div>
+    <div class="f"><label for="r-quien">Quien realiza el recorrido</label><input id="r-quien" placeholder="Nombre y cargo"></div>
+  </div>
+  <div class="filas" id="r-filas"></div>
+  <button class="b" onclick="addR()">+ Agregar puesto verificado</button>
+  <div class="resumen" id="r-res">Sin puestos verificados.</div>
+  <div class="f full" style="margin-top:12px"><label for="r-obs">Observaciones y acciones inmediatas</label><textarea id="r-obs" placeholder="Registrar cobertura, suplencias autorizadas y necesidades detectadas."></textarea></div>
+  <div class="acciones">
+    <button class="b pri" onclick="pdf()">Generar PDF</button>
+    <button class="b" onclick="limpiar('i5')">Limpiar</button>
+  </div>
+  <div class="firmas"><div class="firma">Quien realiza el recorrido</div><div class="firma">Recibe · Servicio de GyO</div></div>
+</section>
+
+<!-- GO-06 -->
+<section class="panel" id="i6">
+  <h2>GO-06 · Informes a familiares y constancias de acompañamiento</h2>
+  <p class="norma">Puntos 45 y 35. La primera sección verifica que el informe ocurra en el horario publicado; la segunda registra las constancias entregadas el mismo día.</p>
+  <div class="grid">
+    <div class="f"><label for="if-prog">Horario publicado</label><input type="time" id="if-prog"></div>
+    <div class="f"><label for="if-real">Hora real de inicio</label><input type="time" id="if-real"></div>
+    <div class="f"><label for="if-med">Médico que informa</label><input id="if-med" placeholder="Nombre"></div>
+    <div class="f"><label for="if-fam">Familias informadas</label><input type="number" min="0" id="if-fam"></div>
+    <div class="f full"><label for="if-mot">Motivo si hubo desfase mayor a 15 minutos</label><input id="if-mot" placeholder="Dejar en blanco si se cumplió el horario"></div>
+  </div>
+  <div class="resumen" id="if-res">Capturar horarios para evaluar el cumplimiento.</div>
+  <h2 style="font-size:13px;margin:22px 0 3px">Constancias de acompañamiento entregadas</h2>
+  <p class="norma" style="margin-bottom:10px">Se entrega el mismo día en que se solicita. Conservar únicamente el acuse.</p>
+  <div class="filas" id="cst-filas"></div>
+  <button class="b" onclick="addC()">+ Agregar constancia</button>
+  <div class="resumen" id="cst-res">Sin constancias registradas.</div>
+  <div class="acciones">
+    <button class="b pri" onclick="pdf()">Generar PDF</button>
+    <button class="b" onclick="limpiar('i6')">Limpiar</button>
+  </div>
+  <div class="firmas"><div class="firma">Enlace del turno</div><div class="firma">Jefatura de Servicio</div></div>
+</section>
+
+<footer class="pie">
+  Los registros contienen datos personales sensibles. Identificar a las pacientes por número de expediente o cama; no asentar nombre completo salvo en la constancia de acompañamiento, que se entrega en mano al familiar.<br>
+  Este archivo no almacena información: exportar el PDF antes de cerrar la ventana. Impresión desde el navegador con Ctrl/Cmd + P → Guardar como PDF.
+</footer>
+
+</div>
+
+<script>
+(function(){
+  var hoy=new Date();
+  document.getElementById('c-fecha').value=hoy.toISOString().slice(0,10);
+  document.getElementById('c-folio').value='GYO-'+hoy.getFullYear()+
+    String(hoy.getMonth()+1).padStart(2,'0')+String(hoy.getDate()).padStart(2,'0')+'-'+
+    String(Math.floor(Math.random()*900)+100);
+})();
+
+var tabs=document.querySelectorAll('nav.sel button');
+tabs.forEach(function(b){
+  b.addEventListener('click',function(){
+    tabs.forEach(function(x){x.setAttribute('aria-selected','false')});
+    b.setAttribute('aria-selected','true');
+    document.querySelectorAll('section.panel').forEach(function(p){p.classList.remove('on')});
+    document.getElementById(b.dataset.t).classList.add('on');
+  });
+});
+
+function el(tag,cls,html){var e=document.createElement(tag);if(cls)e.className=cls;if(html)e.innerHTML=html;return e;}
+function mins(a,b){ // diferencia en minutos entre dos "HH:MM", tolerando cruce de medianoche
+  if(!a||!b)return null;
+  var x=a.split(':'),y=b.split(':');
+  var d=(+y[0]*60+ +y[1])-(+x[0]*60+ +x[1]);
+  if(d<0)d+=1440;
+  return d;
+}
+
+/* ── GO-01 ── */
+var qn=0;
+function addQ(){
+  qn++;
+  var f=el('div','fila');
+  f.innerHTML='<span class="num">'+qn+'</span><div class="grid">'+
+   '<div class="f"><label>Expediente o cama</label><input class="q-exp"></div>'+
+   '<div class="f"><label>Procedimiento</label><input class="q-proc" placeholder="Cesárea programada, HTA, plastía…"></div>'+
+   '<div class="f"><label>Ingreso programado</label><input type="datetime-local" class="q-ing"></div>'+
+   '<div class="f"><label>Incisión programada</label><input type="datetime-local" class="q-inc"></div>'+
+   '</div><span class="badge neutro">Capturar fechas</span>';
+  document.getElementById('q-filas').appendChild(f);
+  f.querySelectorAll('input').forEach(function(i){i.addEventListener('change',calcQ)});
+  calcQ();
+}
+function calcQ(){
+  var filas=document.querySelectorAll('#q-filas .fila'),ok=0,tot=0;
+  filas.forEach(function(f){
+    var a=f.querySelector('.q-ing').value,b=f.querySelector('.q-inc').value,bg=f.querySelector('.badge');
+    f.classList.remove('ok','alerta');
+    if(!a||!b){bg.className='badge neutro';bg.textContent='Capturar fechas';return;}
+    tot++;
+    var h=(new Date(b)-new Date(a))/3600000;
+    if(h<0){bg.className='badge mal';bg.textContent='Fechas invertidas';f.classList.add('alerta');return;}
+    var txt=h.toFixed(1)+' h de anticipación';
+    if(h<=24){ok++;bg.className='badge ok';bg.textContent='Cumple · '+txt;f.classList.add('ok');}
+    else{bg.className='badge mal';bg.textContent='Excede 24 h · '+txt;f.classList.add('alerta');}
+  });
+  var r=document.getElementById('q-res');
+  r.innerHTML= tot===0 ? 'Sin cirugías capturadas.' :
+    'Cumplimiento de la regla de 24 horas: <strong>'+Math.round(ok/tot*100)+'%</strong> ('+ok+' de '+tot+' cirugías). Meta ≥90%.';
+}
+
+/* ── GO-02 ── */
+var en=0;
+function addE(){
+  en++;
+  var f=el('div','fila');
+  f.innerHTML='<span class="num">'+en+'</span><div class="grid">'+
+   '<div class="f"><label>Expediente o cama</label><input class="e-exp"></div>'+
+   '<div class="f"><label>Evento</label><select class="e-ev"><option value="2">Parto (umbral 2 días)</option><option value="3">Cesárea (umbral 3 días)</option><option value="4">Cirugía ginecológica mayor (umbral 4 días)</option><option value="5">Otro (umbral 5 días)</option></select></div>'+
+   '<div class="f"><label>Fecha de ingreso</label><input type="date" class="e-ing"></div>'+
+   '<div class="f"><label>Fecha probable de alta</label><input type="date" class="e-alta"></div>'+
+   '<div class="f"><label>Planeación notificada</label><select class="e-plan"><option>Pendiente</option><option>Médico</option><option>Médico + Enfermería</option><option>Médico + Enfermería + Trabajo Social</option></select></div>'+
+   '<div class="f"><label>Si excede umbral · causa</label><select class="e-causa"><option>No aplica</option><option>Clínica: evolución</option><option>Espera de estudio o gabinete</option><option>Espera de interconsulta</option><option>Trámite administrativo o social</option><option>Traslado o ambulancia</option><option>Falta de insumo</option></select></div>'+
+   '</div><span class="badge neutro">Capturar datos</span>';
+  document.getElementById('e-filas').appendChild(f);
+  f.querySelectorAll('input,select').forEach(function(i){i.addEventListener('change',calcE)});
+  calcE();
+}
+function calcE(){
+  var filas=document.querySelectorAll('#e-filas .fila'),tot=0,plan=0,exc=0;
+  var hoy=new Date();hoy.setHours(0,0,0,0);
+  filas.forEach(function(f){
+    var ing=f.querySelector('.e-ing').value,bg=f.querySelector('.badge');
+    var um=+f.querySelector('.e-ev').value;
+    var p=f.querySelector('.e-plan').value;
+    f.classList.remove('ok','alerta');
+    if(!ing){bg.className='badge neutro';bg.textContent='Capturar datos';return;}
+    tot++;
+    if(p.indexOf('Trabajo Social')>-1)plan++;
+    var dias=Math.round((hoy-new Date(ing+'T00:00'))/86400000);
+    if(dias>um){exc++;bg.className='badge mal';bg.textContent='Estancia '+dias+' días · excede umbral de '+um;f.classList.add('alerta');}
+    else{bg.className='badge ok';bg.textContent='Estancia '+dias+' días · dentro de umbral';f.classList.add('ok');}
+  });
+  var r=document.getElementById('e-res');
+  r.innerHTML= tot===0 ? 'Sin pacientes capturadas.' :
+    'Planeación tripartita completa: <strong>'+Math.round(plan/tot*100)+'%</strong> · Pacientes sobre umbral: <strong>'+exc+'</strong> de '+tot+'. Metas: ≥80% y ≤10%.';
+}
+
+/* ── GO-03 ── */
+var vn=0;
+function addV(){
+  vn++;
+  var f=el('div','fila');
+  f.innerHTML='<span class="num">'+vn+'</span><div class="grid">'+
+   '<div class="f full"><label>Acuerdo</label><input class="v-ac"></div>'+
+   '<div class="f"><label>Responsable</label><input class="v-resp"></div>'+
+   '<div class="f"><label>Fecha compromiso</label><input type="date" class="v-fec"></div>'+
+   '<div class="f"><label>Estado</label><select class="v-est"><option>Abierto</option><option>Cerrado</option></select></div></div>';
+  document.getElementById('v-filas').appendChild(f);
+  f.querySelectorAll('select').forEach(function(i){i.addEventListener('change',calcV)});
+  calcV();
+}
+function calcV(){
+  var filas=document.querySelectorAll('#v-filas .fila'),tot=filas.length,c=0;
+  filas.forEach(function(f){if(f.querySelector('.v-est').value==='Cerrado')c++;});
+  var r=document.getElementById('v-res');
+  r.innerHTML= tot===0 ? 'Sin acuerdos capturados.' :
+    'Acuerdos cerrados: <strong>'+Math.round(c/tot*100)+'%</strong> ('+c+' de '+tot+'). Meta ≥75%.';
+}
+
+/* ── GO-04 ── */
+var icn=0;
+function addIC(){
+  icn++;
+  var f=el('div','fila');
+  f.innerHTML='<span class="num">'+icn+'</span><div class="grid">'+
+   '<div class="f"><label>Sentido</label><select class="ic-dir"><option>GyO solicita</option><option>GyO responde</option></select></div>'+
+   '<div class="f"><label>Servicio contraparte</label><input class="ic-serv" placeholder="Anestesiología, MI, Neonatología…"></div>'+
+   '<div class="f"><label>Expediente o cama</label><input class="ic-exp"></div>'+
+   '<div class="f"><label>Hora de solicitud</label><input type="time" class="ic-a"></div>'+
+   '<div class="f"><label>Hora de respuesta escrita</label><input type="time" class="ic-b"></div>'+
+   '</div><span class="badge neutro">Capturar horas</span>';
+  document.getElementById('ic-filas').appendChild(f);
+  f.querySelectorAll('input,select').forEach(function(i){i.addEventListener('change',calcIC)});
+  calcIC();
+}
+function calcIC(){
+  var filas=document.querySelectorAll('#ic-filas .fila'),tot=0,ok=0;
+  filas.forEach(function(f){
+    var d=mins(f.querySelector('.ic-a').value,f.querySelector('.ic-b').value),bg=f.querySelector('.badge');
+    f.classList.remove('ok','alerta');
+    if(d===null){bg.className='badge neutro';bg.textContent='Capturar horas';return;}
+    tot++;
+    var t=Math.floor(d/60)+' h '+(d%60)+' min';
+    if(d<=480){ok++;bg.className='badge ok';bg.textContent='Cumple · '+t;f.classList.add('ok');}
+    else{bg.className='badge mal';bg.textContent='Excede 8 h · '+t;f.classList.add('alerta');}
+  });
+  var r=document.getElementById('ic-res');
+  r.innerHTML= tot===0 ? 'Sin interconsultas capturadas.' :
+    'Atendidas en 8 horas o menos: <strong>'+Math.round(ok/tot*100)+'%</strong> ('+ok+' de '+tot+'). Meta ≥80% con análisis de las excedidas.';
+}
+
+/* ── GO-05 ── */
+var rn=0;
+function addR(){
+  rn++;
+  var f=el('div','fila');
+  f.innerHTML='<span class="num">'+rn+'</span><div class="grid">'+
+   '<div class="f"><label>Puesto o función</label><input class="r-pu" placeholder="Ginecobstetra de guardia, enfermera de tococirugía…"></div>'+
+   '<div class="f"><label>Plantilla programada</label><input type="number" min="0" class="r-prog" value="1"></div>'+
+   '<div class="f"><label>Presentes al recorrido</label><input type="number" min="0" class="r-pres" value="1"></div>'+
+   '<div class="f"><label>Situación</label><select class="r-sit"><option>Cubierto</option><option>Cubierto con suplencia autorizada</option><option>Incidencia justificada</option><option>Sin cubrir</option></select></div>'+
+   '</div><span class="badge neutro">—</span>';
+  document.getElementById('r-filas').appendChild(f);
+  f.querySelectorAll('input,select').forEach(function(i){i.addEventListener('change',calcR)});
+  calcR();
+}
+function calcR(){
+  var filas=document.querySelectorAll('#r-filas .fila'),tot=filas.length,ok=0;
+  filas.forEach(function(f){
+    var s=f.querySelector('.r-sit').value,bg=f.querySelector('.badge');
+    f.classList.remove('ok','alerta');
+    if(s==='Sin cubrir'){bg.className='badge mal';bg.textContent='Requiere acción inmediata';f.classList.add('alerta');}
+    else{ok++;bg.className='badge ok';bg.textContent=s;f.classList.add('ok');}
+  });
+  var r=document.getElementById('r-res');
+  r.innerHTML= tot===0 ? 'Sin puestos verificados.' :
+    'Puestos cubiertos: <strong>'+Math.round(ok/tot*100)+'%</strong> ('+ok+' de '+tot+').';
+}
+
+/* ── GO-06 ── */
+['if-prog','if-real'].forEach(function(id){
+  document.getElementById(id).addEventListener('change',calcIF);
+});
+function calcIF(){
+  var d=mins(document.getElementById('if-prog').value,document.getElementById('if-real').value);
+  var r=document.getElementById('if-res');
+  if(d===null){r.innerHTML='Capturar horarios para evaluar el cumplimiento.';return;}
+  if(d>720)d=d-1440; // informe adelantado
+  if(d<=15)r.innerHTML='Informe en horario. Desfase de <strong>'+d+'</strong> minutos.';
+  else r.innerHTML='Fuera de horario. Desfase de <strong>'+d+'</strong> minutos: registrar el motivo.';
+}
+var cn=0;
+function addC(){
+  cn++;
+  var f=el('div','fila');
+  f.innerHTML='<span class="num">'+cn+'</span><div class="grid">'+
+   '<div class="f"><label>Familiar solicitante</label><input class="c-fam"></div>'+
+   '<div class="f"><label>Parentesco</label><input class="c-par"></div>'+
+   '<div class="f"><label>Expediente de la paciente</label><input class="c-exp"></div>'+
+   '<div class="f"><label>Hora de solicitud</label><input type="time" class="c-hs"></div>'+
+   '<div class="f"><label>Hora de entrega</label><input type="time" class="c-he"></div>'+
+   '<div class="f"><label>Acuse</label><select class="c-ac"><option>Pendiente</option><option>Entregada y firmada</option></select></div></div>';
+  document.getElementById('cst-filas').appendChild(f);
+  f.querySelectorAll('select').forEach(function(i){i.addEventListener('change',calcC)});
+  calcC();
+}
+function calcC(){
+  var filas=document.querySelectorAll('#cst-filas .fila'),tot=filas.length,e=0;
+  filas.forEach(function(f){if(f.querySelector('.c-ac').value!=='Pendiente')e++;});
+  var r=document.getElementById('cst-res');
+  r.innerHTML= tot===0 ? 'Sin constancias registradas.' :
+    'Entregadas: <strong>'+e+'</strong> de '+tot+' solicitadas. Meta 100% el mismo día.';
+}
+
+/* ── Utilidades ── */
+function pdf(){window.print();}
+function limpiar(id){
+  if(!confirm('Se borrará lo capturado en este instrumento. ¿Continuar?'))return;
+  var p=document.getElementById(id);
+  p.querySelectorAll('input,textarea').forEach(function(i){if(i.type!=='date'&&!i.readOnly)i.value='';});
+  p.querySelectorAll('.filas').forEach(function(f){f.innerHTML='';});
+  [calcQ,calcE,calcV,calcIC,calcR,calcC,calcIF].forEach(function(fn){try{fn()}catch(e){}});
+}
+
+addQ();addE();addV();addIC();addR();addC();
+</script>
+</body>
+</html>
